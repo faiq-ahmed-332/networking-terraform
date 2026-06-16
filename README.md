@@ -13,15 +13,15 @@ Infrastructure as Code for AWS networking using Terraform. Builds a production-s
 
 | Resource | Name | Purpose |
 |---|---|---|
-| VPC | `mlops-dev-vpc` | Network boundary, CIDR 10.0.0.0/16 |
-| Public subnet | `mlops-dev-subnet-public-1a` | Internet-facing resources, NAT Gateway |
-| Private subnet | `mlops-dev-subnet-private-1b` | Workloads, no direct internet access |
-| Internet Gateway | `mlops-dev-igw` | Public ingress and egress |
-| Elastic IP | `mlops-dev-nat-eip` | Static IP for NAT Gateway |
-| NAT Gateway | `mlops-dev-nat-gateway` | Outbound-only internet for private subnet |
-| Route table | `mlops-dev-rt-public` | Routes public subnet traffic to IGW |
-| Route table | `mlops-dev-rt-private` | Routes private subnet traffic to NAT |
-| Security group | `mlops-dev-sg-private` | Allows 443 and 22 inbound from VPC only |
+| VPC | `aws-networking-dev-vpc` | Network boundary, CIDR 10.0.0.0/16 |
+| Public subnet | `aws-networking-dev-subnet-public-1a` | Internet-facing resources, NAT Gateway |
+| Private subnet | `aws-networking-dev-subnet-private-1b` | Workloads, no direct internet access |
+| Internet Gateway | `aws-networking-dev-igw` | Public ingress and egress |
+| Elastic IP | `aws-networking-dev-nat-eip` | Static IP for NAT Gateway |
+| NAT Gateway | `aws-networking-dev-nat-gateway` | Outbound-only internet for private subnet |
+| Route table | `aws-networking-dev-rt-public` | Routes public subnet traffic to IGW |
+| Route table | `aws-networking-dev-rt-private` | Routes private subnet traffic to NAT |
+| Security group | `aws-networking-dev-sg-private` | Allows 443 and 22 inbound from VPC only |
 
 ## Project structure
 
@@ -71,7 +71,7 @@ Default values are set in `variable.tf`. Override them by creating a `dev.tfvars
 ```hcl
 # dev.tfvars  (gitignored — never commit this)
 aws_region   = "eu-west-2"
-project_name = "mlops"
+project_name = "aws-networking"
 env          = "dev"
 vpc_cidr     = "10.0.0.0/16"
 ```
@@ -113,7 +113,7 @@ terraform output
 ```
 
 Verify in AWS Console:
-- **VPC** → Your VPCs → find `mlops-dev-vpc`
+- **VPC** → Your VPCs → find `aws-networking-dev-vpc`
 - **Subnets** → confirm two subnets in different AZs
 - **Route Tables** → public RT routes to IGW, private RT routes to NAT
 - **NAT Gateways** → status should be `Available`
@@ -131,7 +131,7 @@ terraform destroy
 | Variable | Description | Default |
 |---|---|---|
 | `aws_region` | AWS region to deploy into | `eu-west-2` |
-| `project_name` | Prefix applied to all resource names | `mlops` |
+| `project_name` | Prefix applied to all resource names | `aws-networking` |
 | `env` | Environment name (dev/staging/prod) | `dev` |
 | `vpc_cidr` | CIDR block for the VPC | `10.0.0.0/16` |
 
